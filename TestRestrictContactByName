@@ -1,0 +1,46 @@
+@isTest
+public class TestRestrictContactByName {
+    static Account getAccount() {
+        return new Account(Name = 'Test');
+    }
+    
+    static Contact getContact(ID accId, String lname) {
+        return new Contact(LastName = lname, AccountId = accId);
+    }
+    
+    static testmethod void fireValidation() {
+        Account acc = getAccount();
+        insert acc;
+        
+        Contact con = getContact(acc.Id, 'INVALIDNAME');
+        Test.startTest();
+        
+        Database.SaveResult ins = Database.insert(con, false);
+        
+        /*try{
+            insert con;            
+        }catch(Exception e) {
+            System.assertEquals('Cannot insert/update a contact with lastName InvalidName', e.getMessage());
+        }*/
+        test.stopTest();
+        System.assertEquals(false, ins.isSuccess());
+    }
+    
+    static testmethod void doNotfireValidation() {
+        Account acc = getAccount();
+        insert acc;
+        
+        Contact con = getContact(acc.Id, 'LastName');
+        Test.startTest();
+        
+        Database.SaveResult ins = Database.insert(con, false);
+        
+        /*try{
+            insert con;            
+        }catch(Exception e) {
+            System.assertEquals('Cannot insert/update a contact with lastName InvalidName', e.getMessage());
+        }*/
+        test.stopTest();
+        System.assertEquals(true, ins.isSuccess());
+    }
+}
