@@ -1,0 +1,9 @@
+public class RandomContactFactory {
+    public static List<Contact> generateRandomContacts (Integer numberOfContacts, String lastName) {
+        List<Contact> generatedContacts = new List<Contact>();
+        for (Integer i = 1; i <= numberOfContacts ; i++) {
+            generatedContacts.add(new Contact(FirstName = 'Test ' + i, LastName = lastName, Email = 'test'+i+'@test.com'));
+        }
+        return generatedContacts;
+    }
+}
