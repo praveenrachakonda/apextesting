@@ -1,0 +1,11 @@
+//Why before?
+//Validations needs to fire before the record is inserted/updated
+//
+//Before a contact is update/inserted fire the validation rule 
+trigger RestrictContactByName on Contact (before insert, before update) {
+    for (Contact c : Trigger.new) {
+        if(c.LastName == 'INVALIDNAME'){           
+            c.addError('Cannot insert/update a contact with lastName InvalidName');   
+        }
+    }
+}
