@@ -1,0 +1,13 @@
+//Why Before?
+//An error message needs to be provided before a record is deleted. 
+//
+//As a developer you would really need to understand these - https://developer.salesforce.com/docs/atlas.en-us.224.0.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select_comparisonoperators.htm
+//
+trigger AccountDeletion on Account (before delete) {
+    for (Account acc : [SELECT ID 
+                        FROM Account
+                        WHERE ID IN (SELECT AccountId FROM Opportunity WHERE AccountID IN :Trigger.Old)]) {//These queries are called ID Semi-Join
+                            System.debug('Do we have accounts with Oppo? ' + acc);
+                            Trigger.oldMap.get(acc.Id).addError('You cannot delete the record with Opportunities associated');
+                        }
+}
