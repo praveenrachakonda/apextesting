@@ -1,0 +1,29 @@
+@isTest
+public class TestAccountDeletion {
+    static testmethod void fireValidationError() {
+        Account acc = new Account(Name = 'Test');
+        insert acc;
+        
+        Opportunity opp = new Opportunity(AccountId = acc.Id, StageName = 'Prospecting', Name = 'acc test', CloseDate = date.today());
+        insert opp;
+        
+        Test.startTest();
+        Database.DeleteResult res = Database.delete(acc.Id,false);
+        Test.stopTest();
+        SYstem.debug('result ' + res);
+		System.assertEquals('You cannot delete the record with Opportunities associated', res.getErrors()[0].getMessage());
+    }
+    
+    static testmethod void fireNoValidationError() {
+        Account acc = new Account(Name = 'Test');
+        insert acc;
+        
+        Opportunity opp = new Opportunity(StageName = 'Prospecting', Name = 'acc test', CloseDate = date.today());
+        insert opp;
+        
+        Test.startTest();
+        Database.DeleteResult res = Database.delete(acc.Id,false);
+        Test.stopTest();
+        System.assertEquals(true, res.isSuccess());
+    }
+}
