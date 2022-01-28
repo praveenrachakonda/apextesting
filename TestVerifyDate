@@ -1,0 +1,17 @@
+@isTest
+public class TestVerifyDate {
+    static testmethod void verifyEndOfMonth() {
+        Date d1 = date.newInstance(2022,01,27);
+        Date d2 = date.newInstance(2022,01,15);
+        Date retrunedDate = VerifyDate.CheckDates(d1, d2);
+        Date finalDate = date.newInstance(2022, 01, 31);
+        System.assertEquals(finalDate,retrunedDate);
+    }
+    
+    static testmethod void addThirtyDays() {
+        Date d1 = date.newInstance(2022,01,15);
+        Date d2 = date.newInstance(2022,01,27);
+        Date retrunedDate = VerifyDate.CheckDates(d1, d2);
+        System.assertEquals(d2,retrunedDate);
+    }
+}
